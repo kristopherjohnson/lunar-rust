@@ -1,5 +1,5 @@
 extern crate read_input;
-use read_input::prelude::*; // input()
+use read_input::prelude::*; // imports input()
 
 fn main() {
     loop {
@@ -30,19 +30,8 @@ static mut T: f64 = 0.0;
 static mut V: f64 = 0.0;
 static mut Z: f64 = 0.0;
 
-unsafe fn trace(_location: &str) {
-    /*
-    println!(
-        "<{}: A={} G={} I={} J={} K={} L={} M={} N={} S={} T={} V={} Z={}>",
-        location, A, G, I, J, K, L, M, N, S, T, V, Z
-    );
-    */
-}
-
 /// Run the simulation until the lander is on the moon.
 unsafe fn play_game() {
-    trace("play_game");
-
     // 30 - 110
     println!("CONTROL CALLING LUNAR MODULE. MANUAL CONTROL IS NECESSARY");
     println!("YOU MAY RESET FUEL RATE K EACH 10 SECS TO 0 OR ANY VALUE");
@@ -70,8 +59,6 @@ unsafe fn play_game() {
 }
 
 unsafe fn goto_150() {
-    trace("goto_150");
-
     // 150
     print!(
         "{:8}{:15}{:7}{:15.2}{:12.1}      K=",
@@ -94,8 +81,6 @@ unsafe fn goto_150() {
 }
 
 unsafe fn goto_160() {
-    trace("goto_160");
-
     // 160
     if M - N < 0.001 {
         // 240
@@ -129,8 +114,6 @@ unsafe fn goto_160() {
 }
 
 unsafe fn goto_200() {
-    trace("goto_200");
-
     // 200
     gosub_420();
     if I <= 0.0 {
@@ -174,16 +157,12 @@ unsafe fn goto_200() {
 }
 
 unsafe fn goto_230() {
-    trace("goto_230");
-
     // 230
     gosub_330();
     goto_160();
 }
 
 unsafe fn goto_260() {
-    trace("goto_260");
-
     // 260
     let w = 3600.0 * V;
     println!("ON THE MOON AT {:.2} SECS", L);
@@ -216,8 +195,6 @@ unsafe fn goto_260() {
 }
 
 unsafe fn gosub_330() {
-    trace("gosub_330");
-
     // 330
     L = L + S;
     T = T - S;
@@ -227,8 +204,6 @@ unsafe fn gosub_330() {
 }
 
 unsafe fn goto_340() {
-    trace("goto_340");
-
     loop {
         // 340
         if S < 0.005 {
@@ -247,8 +222,6 @@ unsafe fn goto_340() {
 }
 
 unsafe fn gosub_420() {
-    trace("gosub_420");
-
     let q = S * K / M;
 
     let q_2 = q.powi(2);

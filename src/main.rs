@@ -88,8 +88,8 @@ unsafe fn goto_160() {
         S = (-V + (V * V + 2.0 * A * G).sqrt()) / G;
 
         // 250
-        V = V + G * S;
-        L = L + S;
+        V += G * S;
+        L += S;
 
         goto_260();
         return;
@@ -184,7 +184,7 @@ unsafe fn goto_260() {
         println!("SORRY,BUT THERE WERE NO SURVIVORS-YOU BLEW IT!");
         println!(
             "IN FACT YOU BLASTED A NEW LUNAR CRATER {:.2} FT. DEEP",
-            w * 0.277777
+            w * 0.277_777
         );
     }
 
@@ -196,9 +196,9 @@ unsafe fn goto_260() {
 
 unsafe fn gosub_330() {
     // 330
-    L = L + S;
-    T = T - S;
-    M = M - S * K;
+    L += S;
+    T -= S;
+    M -= S * K;
     A = I;
     V = J;
 }
@@ -244,10 +244,10 @@ fn play_again() -> bool {
         .add_err_test(
             |value| {
                 let value = value.to_ascii_uppercase();
-                value.starts_with("Y") || value.starts_with("N")
+                value.starts_with('Y') || value.starts_with('N')
             },
             "(ANS. YES OR NO):",
         )
         .get();
-    response.to_ascii_uppercase().starts_with("Y")
+    response.to_ascii_uppercase().starts_with('Y')
 }

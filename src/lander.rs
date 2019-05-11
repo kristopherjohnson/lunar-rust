@@ -6,6 +6,7 @@ use crate::io::{Score, IO};
 ///
 /// The terse member names come from the names of global variables in the
 /// original FOCAL code.
+#[derive(Copy, Clone, Default)]
 pub struct Lander {
     /// Altitude (miles)
     pub a: f64,
@@ -31,25 +32,6 @@ pub struct Lander {
     pub v: f64,
     /// Thrust per pound of fuel burned
     pub z: f64,
-}
-
-impl Default for Lander {
-    fn default() -> Self {
-        Lander {
-            a: 0.0,
-            g: 0.0,
-            i: 0.0,
-            j: 0.0,
-            k: 0.0,
-            l: 0.0,
-            m: 0.0,
-            n: 0.0,
-            s: 0.0,
-            t: 0.0,
-            v: 0.0,
-            z: 0.0,
-        }
-    }
 }
 
 impl Lander {

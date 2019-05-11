@@ -64,7 +64,7 @@ impl IO for StdIO {
     fn on_the_moon(&mut self, lander: &Lander, score: Score) {
         println!("ON THE MOON AT {:8.2} SECS", lander.l);
         println!("IMPACT VELOCITY OF {:8.2} M.P.H.", lander.v_mph());
-        println!("FUEL LEFT: {:8.2} LBS", lander.m - lander.n);
+        println!("FUEL LEFT: {:8.2} LBS", lander.fuel_remaining());
 
         match score {
             Score::Perfect => println!("PERFECT LANDING !-(LUCKY"),

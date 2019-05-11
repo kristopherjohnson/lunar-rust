@@ -58,6 +58,11 @@ impl Lander {
         3600.0 * self.v
     }
 
+    /// Return pounds of fuel remaining
+    pub fn fuel_remaining(&self) -> f64 {
+        return self.m - self.n
+    }
+
     fn start_turn(&mut self, io: &mut dyn IO) {
         // 02.10 in original FOCAL code
         self.k = io.get_fuel_rate(self);
@@ -69,7 +74,7 @@ impl Lander {
     fn turn_loop(&mut self, io: &mut dyn IO) {
         // 03.10 in original FOCAL code
         loop {
-            if self.m - self.n < 0.001 {
+            if self.fuel_remaining() < 0.001 {
                 self.fuel_out(io);
                 return;
             }

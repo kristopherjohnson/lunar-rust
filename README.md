@@ -20,6 +20,12 @@ This code is based upon these sources:
 * [David Ahl's port to BASIC in _BASIC Computer Games_ (1978)][ahl]
 * [My port to C][lunarc]
 
+If you have Rust installed, you should be able to build the executable and play the game by running this command:
+
+```
+cargo run
+```
+
 Here is an example play session:
 
 ```
@@ -71,6 +77,8 @@ CONTROL OUT
 
 
 ```
+
+The code is currently a lot more complicated than it needs to be for a simple console game. I've factored out the I/O operations because I intend to do some experiments with machine learning to find optimal solutions.
 
 [lunarlander]: https://en.wikipedia.org/wiki/Lunar_Lander_(video_game_genre)#Text_games
 [storer]: http://www.cs.brandeis.edu/~storer/LunarLander/LunarLander/LunarLanderListing.jpg

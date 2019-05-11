@@ -53,6 +53,11 @@ impl Lander {
         self.start_turn(io);
     }
 
+    /// Return downward speed as miles/hour
+    pub fn v_mph(&self) -> f64 {
+        3600.0 * self.v
+    }
+
     fn start_turn(&mut self, io: &mut dyn IO) {
         // 02.10 in original FOCAL code
         self.k = io.get_fuel_rate(self);
@@ -142,7 +147,7 @@ impl Lander {
 
     fn on_the_moon(&mut self, io: &mut dyn IO) {
         // 05.10 in original FOCAL code
-        let w = 3600.0 * self.v;
+        let w = self.v_mph();
 
         let score = if w <= 1.0 {
             Score::Perfect

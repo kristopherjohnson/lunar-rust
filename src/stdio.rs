@@ -44,7 +44,7 @@ impl IO for StdIO {
             lander.l.round(),
             lander.a.trunc(),
             (5280.0 * (lander.a - lander.a.trunc())).trunc(),
-            3600.0 * lander.v,
+            lander.v_mph(),
             lander.m - lander.n
         );
 
@@ -62,9 +62,8 @@ impl IO for StdIO {
     }
 
     fn on_the_moon(&mut self, lander: &Lander, score: Score) {
-        let w = 3600.0 * lander.v;
         println!("ON THE MOON AT {:8.2} SECS", lander.l);
-        println!("IMPACT VELOCITY OF {:8.2} M.P.H.", w);
+        println!("IMPACT VELOCITY OF {:8.2} M.P.H.", lander.v_mph());
         println!("FUEL LEFT: {:8.2} LBS", lander.m - lander.n);
 
         match score {

@@ -25,32 +25,10 @@ fn main() {
     loop {
         lander.play_game(&mut io);
 
-        if !play_again(&io) {
+        if !io.play_again() {
             break;
         }
     }
 
     io.farewell();
-}
-
-/// Asks whether user wants to play again.
-///
-/// If user does not respond with something beginning with "Y" or "N", then
-/// repeats the prompt until the user provides a valid response.
-fn play_again(io: &StdIO) -> bool {
-    println!("\n\n\n\nTRY AGAIN?");
-    loop {
-        print!("(ANS. YES OR NO):");
-        match io.accept_line() {
-            Ok(line) => {
-                let line = line.trim().to_ascii_uppercase();
-                if line.starts_with('Y') {
-                    return true;
-                } else if line.starts_with('N') {
-                    return false;
-                }
-            }
-            Err(_) => return false,
-        }
-    }
 }

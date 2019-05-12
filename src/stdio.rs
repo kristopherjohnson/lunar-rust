@@ -23,6 +23,28 @@ impl StdIO {
         println!("FREE FALL IMPACT TIME=120 SECS. CAPSULE WEIGHT=32500 LBS\n\n");
     }
 
+    /// Asks whether user wants to play again.
+    ///
+    /// If user does not respond with something beginning with "Y" or "N", then
+    /// repeats the prompt until the user provides a valid response.
+    pub fn play_again(&self) -> bool {
+        println!("\n\n\n\nTRY AGAIN?");
+        loop {
+            print!("(ANS. YES OR NO):");
+            match self.accept_line() {
+                Ok(line) => {
+                    let line = line.trim().to_ascii_uppercase();
+                    if line.starts_with('Y') {
+                        return true;
+                    } else if line.starts_with('N') {
+                        return false;
+                    }
+                }
+                Err(_) => return false,
+            }
+        }
+    }
+
     /// Print a final message.
     pub fn farewell(&self) {
         println!("CONTROL OUT");
@@ -34,7 +56,7 @@ impl StdIO {
     /// if data is read that is not a valid numeric value.
     ///
     /// Calls `std::process::exit(-1)` on EOF.
-    pub fn accept_number(&self) -> io::Result<f64> {
+    fn accept_number(&self) -> io::Result<f64> {
         let line = self.accept_line()?;
         match line.trim().parse() {
             Ok(num) => Ok(num),
@@ -45,7 +67,7 @@ impl StdIO {
     /// Reads a line from standard input.
     ///
     /// Calls `std::process::exit(-1)` on EOF.
-    pub fn accept_line(&self) -> io::Result<String> {
+    fn accept_line(&self) -> io::Result<String> {
         io::stdout().flush()?;
         let mut line = String::new();
         io::stdin().read_line(&mut line)?;

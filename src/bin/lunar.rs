@@ -15,10 +15,7 @@ fn main() {
         // If --echo is present, then write all input back to standard output.
         // (This is useful for testing with files as redirected input.)
         if args[1] == "--echo" {
-            eprintln!("ECHO");
             io.echo_input = true;
-        } else {
-            eprintln!("NO ECHO");
         }
     }
 

@@ -60,7 +60,7 @@ impl Lander {
 
     /// Return pounds of fuel remaining
     pub fn fuel_remaining(&self) -> f64 {
-        return self.m - self.n
+        return self.m - self.n;
     }
 
     fn start_turn(&mut self, io: &mut dyn IO) {

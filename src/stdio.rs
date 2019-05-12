@@ -1,14 +1,18 @@
 //! Implements game I/O using standard input and standard output.
 
-extern crate read_input;
-use read_input::prelude::*; // imports input()
-
 use crate::io::{Score, IO};
 use crate::lander::Lander;
 
+use std::io;
+use std::io::prelude::*;
+use std::process;
+
 /// Implementation of the `lunar::io::IO` trait using standard input and
 /// standard output.
-pub struct StdIO {}
+#[derive(Default)]
+pub struct StdIO {
+    pub echo_input: bool,
+}
 
 impl StdIO {
     /// Print instructions for playing the game.
@@ -23,11 +27,35 @@ impl StdIO {
     pub fn farewell(&self) {
         println!("CONTROL OUT");
     }
-}
 
-impl Default for StdIO {
-    fn default() -> Self {
-        StdIO {}
+    /// Reads a numeric value from standard input.
+    ///
+    /// Returns an error with kind `std::io::ErrorKind::InvalidData`
+    /// if data is read that is not a valid numeric value.
+    ///
+    /// Calls `std::process::exit(-1)` on EOF.
+    pub fn accept_number(&self) -> io::Result<f64> {
+        let line = self.accept_line()?;
+        match line.trim().parse() {
+            Ok(num) => Ok(num),
+            Err(err) => Err(io::Error::new(io::ErrorKind::InvalidData, err)),
+        }
+    }
+
+    /// Reads a line from standard input.
+    ///
+    /// Calls `std::process::exit(-1)` on EOF.
+    pub fn accept_line(&self) -> io::Result<String> {
+        io::stdout().flush()?;
+        let mut line = String::new();
+        io::stdin().read_line(&mut line)?;
+        if line.is_empty() {
+            process::exit(-1);
+        }
+        if self.echo_input {
+            print!("{}", line);
+        }
+        Ok(line)
     }
 }
 
@@ -48,13 +76,25 @@ impl IO for StdIO {
             lander.m - lander.n
         );
 
-        // TODO: This needs to reject values between 0 and 8,
-        // and show the NOT POSSIBLE message on rejection.
-        input()
-            .msg("K=:")
-            .inside(0.0..=200.0)
-            .err("ENTER A VALUE FOR K BETWEEN 0 AND 200 LBS/SEC")
-            .get()
+        loop {
+            print!("K=:");
+            match self.accept_number() {
+                Ok(num) => {
+                    if (num == 0.0 || num >= 8.0) && num <= 200.0 {
+                        return num;
+                    }
+                }
+                Err(err) => {
+                    if err.kind() != io::ErrorKind::InvalidData {
+                        panic!("unable to read input");
+                    }
+                }
+            }
+            print!("NOT POSSIBLE");
+            for _ in 1..=51 {
+                print!(".")
+            }
+        }
     }
 
     fn fuel_out(&mut self, l: f64) {

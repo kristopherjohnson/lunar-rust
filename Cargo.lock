@@ -3,14 +3,4 @@
 [[package]]
 name = "lunar"
 version = "0.1.0"
-dependencies = [
- "read_input 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
-[[package]]
-name = "read_input"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[metadata]
-"checksum read_input 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f48f955e4b582a03212f18e594f04d8c81d4eeaae4bc20eaed794ce9cefd3d4c"

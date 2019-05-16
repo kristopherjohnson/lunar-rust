@@ -36,6 +36,10 @@ impl StdIO {
             print!("(ANS. YES OR NO):");
             match self.accept_line() {
                 Ok(line) => {
+                    if line.is_empty() {
+                        // EOF
+                        return false;
+                    }
                     let line = line.trim().to_ascii_uppercase();
                     if line.starts_with('Y') {
                         return true;

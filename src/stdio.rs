@@ -3,9 +3,12 @@
 use crate::io::{Score, IO};
 use crate::lander::Lander;
 
+use std::error::Error;
 use std::io;
 use std::io::prelude::*;
+use std::marker::{Send, Sync};
 use std::process;
+use std::str::FromStr;
 
 /// Implementation of the `lunar::io::IO` trait using standard input and
 /// standard output.
@@ -52,28 +55,36 @@ impl StdIO {
 
     /// Reads a numeric value from standard input.
     ///
-    /// Returns an error with kind `std::io::ErrorKind::InvalidData`
-    /// if data is read that is not a valid numeric value.
+    /// The value type `T` is expected to be something like `f32` or `f64`, but it
+    /// could be any type for which `str.parse()` is valid.
     ///
-    /// Calls `std::process::exit(-1)` on EOF.
-    fn accept_number(&self) -> io::Result<f64> {
+    /// Returns an error with kind `std::io::ErrorKind::InvalidData` if text is read
+    /// that cannot be parsed as a numeric value.
+    ///
+    /// Returns an error with kind `std::io::ErrorKind::UnexpectedEof` if
+    /// end-of-file is encountered without any preceding input.
+    fn accept_value<T>(&self) -> io::Result<T>
+    where
+        T: FromStr,
+        <T as FromStr>::Err: 'static + Error + Send + Sync,
+    {
         let line = self.accept_line()?;
+        if line.is_empty() {
+            return Err(io::Error::new(io::ErrorKind::UnexpectedEof, "end of file"));
+        }
         match line.trim().parse() {
             Ok(num) => Ok(num),
             Err(err) => Err(io::Error::new(io::ErrorKind::InvalidData, err)),
         }
     }
 
-    /// Reads a line from standard input.
+    /// Flushes standard output and reads a line from standard input.
     ///
-    /// Calls `std::process::exit(-1)` on EOF.
+    /// On EOF, returns an empty string.
     fn accept_line(&self) -> io::Result<String> {
         io::stdout().flush()?;
         let mut line = String::new();
         io::stdin().read_line(&mut line)?;
-        if line.is_empty() {
-            process::exit(-1);
-        }
         if self.echo_input {
             print!("{}", line);
         }
@@ -100,17 +111,21 @@ impl IO for StdIO {
 
         loop {
             print!("K=:");
-            match self.accept_number() {
+            match self.accept_value() {
                 Ok(num) => {
                     if (num == 0.0 || num >= 8.0) && num <= 200.0 {
                         return num;
                     }
                 }
-                Err(err) => {
-                    if err.kind() != io::ErrorKind::InvalidData {
+                Err(err) => match err.kind() {
+                    io::ErrorKind::InvalidData => {}
+                    io::ErrorKind::UnexpectedEof => {
+                        process::exit(-1);
+                    }
+                    _ => {
                         panic!("unable to read input");
                     }
-                }
+                },
             }
             print!("NOT POSSIBLE");
             for _ in 1..=51 {

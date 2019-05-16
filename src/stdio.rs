@@ -1,7 +1,7 @@
 //! Implements game I/O using standard input and standard output.
 
-use crate::io::{Score, IO};
-use crate::lander::Lander;
+use super::io::{Score, IO};
+use super::lander::Lander;
 
 use std::error::Error;
 use std::io;

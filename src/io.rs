@@ -1,6 +1,6 @@
 //! Generic interface for I/O operations used by the simulation.
 
-use crate::lander::Lander;
+use super::lander::Lander;
 
 /// Result of a landing
 pub enum Score {

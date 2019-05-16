@@ -1,6 +1,6 @@
 //! Implementation of the simulation's calculations and logic.
 
-use crate::io::{Score, IO};
+use super::io::{Score, IO};
 
 /// Lander simulation
 ///

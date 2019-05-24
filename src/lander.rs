@@ -53,12 +53,22 @@ impl Lander {
         self.start_turn(io);
     }
 
-    /// Return downward speed as miles/hour
+    /// Returns elapsed time in seconds
+    pub fn elapsed_secs(&self) -> f64 {
+        return self.l;
+    }
+
+    /// Returns altitude in miles
+    pub fn altitude(&self) -> f64 {
+        return self.a;
+    }
+
+    /// Returns downward speed as miles/hour
     pub fn v_mph(&self) -> f64 {
         3600.0 * self.v
     }
 
-    /// Return pounds of fuel remaining
+    /// Returns pounds of fuel remaining
     pub fn fuel_remaining(&self) -> f64 {
         self.m - self.n
     }

@@ -98,7 +98,7 @@ impl<'a> IO for TestIO<'a> {
 #[test]
 fn good_landing() {
     #[rustfmt::skip]
-    let expected_lines: [Line; 20] = [
+    let expected_lines = [
         //     TIME,SECS   ALTITUDE,MILES+FEET   VELOCITY,MPH   FUEL,LBS   FUEL RATE
         Line (        0,           120,     0,       3600.00,   16000.0,      0   ),
         Line (       10,           109,  5016,       3636.00,   16000.0,      0   ),

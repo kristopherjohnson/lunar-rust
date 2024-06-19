@@ -119,7 +119,7 @@ impl Lander {
                     let w = (1.0 - self.m * self.g / (self.z * self.k)) / 2.0;
                     self.s = self.m * self.v
                         / (self.z * self.k * (w + (w * w + self.v / self.z).sqrt()))
-                        + 0.5;
+                        + 0.05;
                     self.apply_thrust();
                     if self.i <= 0.0 {
                         self.loop_until_on_the_moon(io);
